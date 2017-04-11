@@ -20,7 +20,7 @@ PHP5.3+既可
 
 ## 效果图
 
-![](../images/php-output.png "效果图")
+![](images/php-output.png "效果图")
 
 
 ## 简单使用
