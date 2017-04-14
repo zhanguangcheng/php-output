@@ -85,16 +85,16 @@ class Output
     private static function console(array $args, $type = 'js')
     {
         $label = $args[0];
-        $label = str_replace('`', '', (is_string($label) || is_numeric($label) ? $label : gettype($label)));
+        $label = self::console_filter(is_string($label) || is_numeric($label) ? $label : gettype($label));
         echo "<script>\n";
         echo 'console.groupCollapsed(`' . $label . "`);\n";
         if ($type == 'js') {
             $args  = array_map('Output::get_console_log', $args);
             $args  = array_map('json_encode', $args);
-            echo 'console.log(' . implode(',', $args) . ");\n";
+            echo 'console.log(' . (implode(',', $args)) . ");\n";
         } else {
             $args  = array_map('Output::get_var_dump', $args);
-            echo 'console.log(`' . str_replace('`', '', implode("\n", $args)) . "`);\n";
+            echo 'console.log(`' . self::console_filter(implode("\n", $args)) . "`);\n";
         }
         echo "console.groupEnd();\n";
         echo "</script>\n";
@@ -110,13 +110,18 @@ class Output
     private static function get_console_log($v)
     {
         $type = gettype($v);
-        if (is_callable($v)) {
-            $v = '[PHP Function]';
+        if ($v instanceof Closure) {
+            $v = '[PHP Closure]';
         } elseif ($type == 'resource') {
             $v = '[PHP Resource]';
         } elseif (is_array($v) || $type == 'object'){
             $v = array_map('Output::get_console_log', (array) $v);
         }
         return $v;
+    }
+
+    private static function console_filter($str)
+    {
+        return addcslashes($str, "`\\");
     }
 }
