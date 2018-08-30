@@ -8,7 +8,7 @@
 
 * `Output::var_dump();`         // 原生的var_dump打印，优化了换行。
 * `Output::print_r();`          // 原生的print_r打印，增加了多个参数的支持。
-* `Output::var_dump_plus();`    // 版的var_dump打印，美化之后的，类似xdebug的打印效果。
+* `Output::var_dump_plus();`    // 美化版的var_dump打印，美化之后的，类似xdebug的打印效果。
 * `Output::console_log();`      // 将打印信息打印到浏览器的控制台上，打印的格式为js数据方式。
 * `Output::console_var_dump();` // 将打印信息打印到浏览器的控制台上，打印的格式为var_dump()的字符串结果。
 
@@ -37,4 +37,14 @@ Output::var_dump_plus($data);
 // 打印到控制台
 Output::console_log($data);
 
+```
+
+## 推荐使用别名函数
+
+```php
+function vd() { call_user_func_array('Output::var_dump', func_get_args()); }
+function pr() { call_user_func_array('Output::print_r', func_get_args()); }
+function cl() { call_user_func_array('Output::console_log', func_get_args()); }
+function vdp() { call_user_func_array('Output::var_dump_plus', func_get_args()); }
+function cvd() { call_user_func_array('Output::console_var_dump', func_get_args()); }
 ```
